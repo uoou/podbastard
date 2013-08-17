@@ -401,8 +401,8 @@ function removedodgy() {
 }
 function syncpods () {
 	localStorage.setItem("pods", bloop(subbedpods));
-	//console.log(allpods);
-	//console.log(subbedpods);
+	console.log(allpods);
+	console.log(subbedpods);
 	//console.log(dodgypods);
 }
 ////////////////////////////////////////////////////////////////
@@ -531,7 +531,10 @@ function openpod (id) {
 		pd += "\" id=\"" + i + "\" feed=\"" + id + "\">";
 		pd += "<div class=\"ptitle\">" + allpods[id].item[i].title + "</div>";
 		var desc;
-		if (typeof allpods[id].item[i].description === "string") {
+		console.log(typeof allpods[id].item[i].description);
+		if (allpods[id].item[i].description == null) {
+			desc = "no description";
+		} else if (typeof allpods[id].item[i].description === "string") {
 			desc = allpods[id].item[i].description;
 		} else if (typeof allpods[id].item[i].description === "object" && typeof allpods[id].item[i].description.content === "string") {
 			desc = allpods[id].item[i].description.content;
