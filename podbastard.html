@@ -1,3 +1,30 @@
+<!--
+podbastard
+==========
+
+by uoou
+https://github.com/uoou/podbastard
+
+A super-simple, anti-fully-featured podcast-streamer and feed-rememberer in a single html file.
+
+Installation
+~~~~~~~~~~~~
+Copy it somewhere and open it in a browser. local filesystem is fine, doesn't have to be hosted.
+
+	- Limitations
+		Limited to whatever media your bwoser can play inside html5 audio/video tags
+		Requires javascript. Obviously. Being written in Javascript. Which is is.
+
+License
+~~~~~~~
+GPL v2.
+http://www.gnu.org/licenses/gpl-2.0.html#SEC1
+
+Thanks
+~~~~~~
+
+Kev0bear for his help. Kit Harington for his face.
+-->
 <html>
 <head>
 </head>
@@ -27,6 +54,12 @@ input[type=submit], #fails, #save, #restore {
 	font-weight: bold;
 	margin-top: 3px;
 	background-color: #2ecc71;
+	color: #fff;
+}
+a {
+	text-decoration: none;
+}
+#adder a {
 	color: #fff;
 }
 audio {
@@ -580,9 +613,11 @@ $(document).ready(function(){
 <div id="playcon">
 <div id="player"><h2>ppp</h2></div>
 <div id="adder">
+<a href="https://github.com/uoou/podbastard">
 <img id="logo" src="data:image/jpeg;base64,/9j/4QAYRXhpZgAASUkqAAgAAAAAAAAAAAAAAP/sABFEdWNreQABAAQAAAAUAAD/4QMZaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wLwA8P3hwYWNrZXQgYmVnaW49Iu+7vyIgaWQ9Ilc1TTBNcENlaGlIenJlU3pOVGN6a2M5ZCI/PiA8eDp4bXBtZXRhIHhtbG5zOng9ImFkb2JlOm5zOm1ldGEvIiB4OnhtcHRrPSJBZG9iZSBYTVAgQ29yZSA1LjMtYzAxMSA2Ni4xNDU2NjEsIDIwMTIvMDIvMDYtMTQ6NTY6MjcgICAgICAgICI+IDxyZGY6UkRGIHhtbG5zOnJkZj0iaHR0cDovL3d3dy53My5vcmcvMTk5OS8wMi8yMi1yZGYtc3ludGF4LW5zIyI+IDxyZGY6RGVzY3JpcHRpb24gcmRmOmFib3V0PSIiIHhtbG5zOnhtcE1NPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvbW0vIiB4bWxuczpzdFJlZj0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL3NUeXBlL1Jlc291cmNlUmVmIyIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bXBNTTpEb2N1bWVudElEPSJ4bXAuZGlkOjIzMTg2QjA0MDY2MjExRTM5RENDRkNDRjZENTBGMDgyIiB4bXBNTTpJbnN0YW5jZUlEPSJ4bXAuaWlkOjIzMTg2QjAzMDY2MjExRTM5RENDRkNDRjZENTBGMDgyIiB4bXA6Q3JlYXRvclRvb2w9IkFkb2JlIFBob3Rvc2hvcCBDUzYgV2luZG93cyI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSI4REY3MUIzQTczQjkyMDBGRDU3QUExMTQ1MDA5MDExQiIgc3RSZWY6ZG9jdW1lbnRJRD0iOERGNzFCM0E3M0I5MjAwRkQ1N0FBMTE0NTAwOTAxMUIiLz4gPC9yZGY6RGVzY3JpcHRpb24+IDwvcmRmOlJERj4gPC94OnhtcG1ldGE+IDw/eHBhY2tldCBlbmQ9InIiPz7/7gAOQWRvYmUAZMAAAAAB/9sAhAASDg4OEA4VEBAVHhMREx4jGhUVGiMiGBgaGBgiJx4iISEiHicnLjAzMC4nPj5BQT4+QUFBQUFBQUFBQUFBQUFBARQTExYZFhsXFxsaFhoWGiEaHR0aITEhISQhITE+LScnJyctPjg7MzMzOzhBQT4+QUFBQUFBQUFBQUFBQUFBQUH/wAARCAAtAC0DASIAAhEBAxEB/8QAfwAAAwADAQAAAAAAAAAAAAAAAwQGAQIFBwEBAQEBAAAAAAAAAAAAAAAAAgEDABAAAQMCBQIEAgcJAAAAAAAAARECAxIEACExEwVBIlFhMhSBFXGhQlJiIwaRscHRgpLCQyQRAQEAAQMFAAAAAAAAAAAAAAABESFBAjFRYYFC/9oADAMBAAIRAxEAPwDv87yUVtbmISNbK5O3V3iMvP8AdiLlubq7mMskxLnIGro0L24Pyt06e5f3VxMLiAdAXHPzLkGp6IMsI1ONuJgDTUWxoBmWjX+GEI7Z4oZgKg8g96Ep/bpljeCXZndszOiaHERuahk8cl6Y6HF/py4fLFNdmMWhaHUsP5j6swPLHTv/ANOWd2dy3JtZUQkCprgBkCDiZKcaZ4v9QwXB2bh1EwKMJ/2j4ZLhz3b/AHO9S7ZHYMvsnOtPhjzSN8jFiPqDi17ToHNxUfOp/lWznuJSJF76dKU1+PVv0Yopy7eDO8EUhzjn1pJyqTwweMue0wZUhzST92NvVMCvLcwzGNwci+ohKXhyEdV6Ye4JodyxDXljhGQ1uXqyqHw1xL0dJrFPb8lxzGst/cNdIUDGEFp8PtAYxe3nKslfa2MLdxqI+Re8EgOEWRHbqScb+xtgxrtlp21DXBS8ElShcqKczg8s8JkgYyZm48E0EjuDdaSeuC2wgOTj2uUug4jcrr8R0JxoLmSgvqdUXgVJlSARr4Z4e58FvNynUuawtGnRFPjhEB6F4B26w0uTtqQkD9i4WzP69j8jIJ76Uhwd+Y95I9SjQlMs8JR3E0V2y5iAMjHVZZB3iPjhiXerj3AEQJQctP56/VgI9tsFF3CRUvpA/B1Ll10yxRXHH8g3lIDFbybEp7pFWqnq1vn0PlpjBsHNpt5HtETASyGONkEVPXudU93nniMtd2tm1X7j8C1ImSpmuHuQ+ebP/SXliBS4JIidM1TBx5aTlexS8nbPyDnwAuYwiOEHuJYzLXy6YFux1Fm2acnpnudQlf1/Thng096aCNzak2iQ1KqCiA5a64GPaofRTQPvV+5Q/wCX9NOLsGuX/9k=" />
 <h2>podbastard</h2>
 <p class="weeny">version 0.0.0.0.0.1-2 rc1 alpha</p>
+</a>
 <h3>add a feed</h3>
 <form id="addfeed"><input type="text" /><br /><input type="submit" value="+" /></form>
 <div id="fails" title="click to remove"></div>
