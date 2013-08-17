@@ -229,8 +229,9 @@ input[type=submit]:hover {
 ////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////
 /// message stuff //////////////////////////////////////////////
-var timera, timerb, curopen = null, working = false, totpods, t = 5000, nowplaying = null;
-dodgypods = new Array();
+var timera, timerb, curopen = null, working = false, totpods, t = 5000;
+var dodgypods = new Array();
+var nowplaying = new Array();
 function message (target, info) {
 	if (target=="#messages") {
 		clearTimeout(timera);
@@ -338,6 +339,12 @@ function addapod (url) {
 	}
 }
 function removepod (id) {
+	// update nowplaying
+	if (nowplaying[0] > id) {
+		--nowplaying[0];
+	} else if (nowplaying[0] == id) {
+		nowplaying = [];
+	}
 	subbedpods.splice($.inArray(allpods[id].index, subbedpods), 1);
 	allpods.splice(id, 1);
 	if ($("#sublist").empty()) subdisplay(0, false, false);
@@ -450,7 +457,7 @@ function makeplayer(feed, pod) {
 		//fuck it, try audio
 		var mtype = "audio";
 	}
-	nowplaying = feed + "lol" + pod;
+	nowplaying = [feed, pod];
 	var plhtml = "";
 	plhtml += "<div class=\"cont\">";
 	plhtml += "<h2>" + allpods[feed].title + "</h2>";
@@ -488,7 +495,7 @@ function openpod (id) {
 	var pd = "";
 	for (var i=0;i<allpods[id].item.length;i++) {
 		pd += "<div class=\"apod";
-		if (id + "lol" +i == nowplaying) pd += " nowplaying";
+		if (nowplaying.length > 0 && nowplaying[0] == id && nowplaying[1] == i) pd += " nowplaying";
 		pd += "\" id=\"" + i + "\" feed=\"" + id + "\">";
 		pd += "<div class=\"ptitle\">" + allpods[id].item[i].title + "</div>";
 		var desc;
