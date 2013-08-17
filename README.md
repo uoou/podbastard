@@ -4,6 +4,8 @@ podbastard
 by uoou
 https://github.com/uoou/podbastard
 
+[Demo](http://uoou.info/podbastard.html) 
+
 A super-simple, anti-fully-featured podcast-streamer and feed-rememberer in a single html file.
 
 Installation
