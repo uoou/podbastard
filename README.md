@@ -9,11 +9,11 @@ A super-simple, anti-fully-featured podcast-streamer and feed-rememberer in a si
 Installation
 ------------
 
-Copy it somewhere and open it in a browser. local filesystem is fine, doesn't have to be hosted.
+Copy it somewhere and open it in a browser. Local filesystem is fine, doesn't have to be hosted.
 
 Limitations
 - Limited to whatever media your bwoser can play inside html5 audio/video tags
-- Requires javascript. Obviously. Being written in Javascript. Which is is.
+- Requires javascript. Obviously. Being written in Javascript. Which it is.
 
 License
 -------
