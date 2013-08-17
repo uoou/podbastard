@@ -12,7 +12,7 @@ Installation
 Copy it somewhere and open it in a browser. Local filesystem is fine, doesn't have to be hosted.
 
 Limitations
-- Limited to whatever media your bwoser can play inside html5 audio/video tags
+- Limited to whatever media your browser can play inside html5 audio/video tags
 - Requires javascript. Obviously. Being written in Javascript. Which it is.
 
 License
