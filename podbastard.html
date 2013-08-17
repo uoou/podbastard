@@ -3,6 +3,9 @@
 </head>
 <title>podbastard</title>
 <style>
+html {
+	overflow-y: scroll;
+}
 body {
 	margin: 0px;
 	font-family: sans-serif;
@@ -78,14 +81,15 @@ input[type=submit]:hover {
 #messcon, #playcon {
 	position: absolute;
 	top: 0px;
-	width: 20%;
 	height: 100%;
 	position: fixed;
 }
 #messcon {
+	width: 25%;
 	right: 0px;
 }
 #playcon {
+	width: 25%;
 	left: 0px;
 	position: fixed;
 }
@@ -137,8 +141,8 @@ input[type=submit]:hover {
 	background-color: #7f8c8d;
 }
 #sublist {
-	width: 59.5%;
-	margin: auto;
+	width: 49.5%;
+	margin-left: 25.25%;
 }
 .asub {
 	position: relative;
@@ -195,13 +199,16 @@ input[type=submit]:hover {
 }
 .podlist {
 	max-height: 600px;
-	overflow: auto;
+	overflow-y: scroll;
 	width: 100%;
 }
 .apod {
 	background-color: #ecf0f1;
 	padding: 10px;
 	margin-bottom: 2px;
+}
+.nowplaying {
+	background-color: #f1c40f;
 }
 .apod:hover {
 	background-color: #d35400;
@@ -355,7 +362,7 @@ function removedodgy() {
 }
 function syncpods () {
 	localStorage.setItem("pods", bloop(subbedpods));
-	//console.log(allpods);
+	console.log(allpods);
 	//console.log(subbedpods);
 	//console.log(dodgypods);
 }
@@ -430,18 +437,31 @@ function subdisplay(current, justone, doanim) {
 	}
 }
 function makeplayer(feed, pod) {
-	console.log(allpods[feed].item[pod]);
+	if (typeof allpods[feed].item[pod].enclosure.type === "string") {
+		if (allpods[feed].item[pod].enclosure.type.indexOf("audio") != -1) {
+			var mtype = "audio";
+		} else if (allpods[feed].item[pod].enclosure.type.indexOf("video") != -1) {
+			var mtype = "video width=\"320\" height=\"249\"";	
+		} else {
+			message("#errors", "<p>media not recognised.</p>");
+			return;
+		}
+	} else {
+		//fuck it, try audio
+		var mtype = "audio";
+	}
 	var plhtml = "";
 	plhtml += "<div class=\"cont\">";
 	plhtml += "<h2>" + allpods[feed].title + "</h2>";
 	plhtml += "<h3>" + allpods[feed].item[pod].title + "</h3>";
 	plhtml += "</div>";	
-	plhtml += "<img />";
-	plhtml += "<audio controls=\"controls\" autoplay=\"true\" preload=\"auto\">";
+	if (mtype == "audio") plhtml += "<img />";
+	plhtml += "<" + mtype + " controls=\"controls\" autoplay=\"true\" preload=\"auto\">";
 	plhtml += "<source src=\"" + allpods[feed].item[pod].enclosure.url + "\">";
+	plhtml += "The media is not supported by your browser.";
 	plhtml += "<audio>";
 	$("#playcon #player").html(plhtml);
-	$("#playcon #player img").attr("src", $("#sublist .asub#" + feed + " img").attr("src"));
+	if (mtype == "audio") $("#playcon #player img").attr("src", $("#sublist .asub#" + feed + " img").attr("src"));
 	$("#playcon #player").hide().fadeIn();
 }
 ////////////////////////////////////////////////////////////////
@@ -528,6 +548,8 @@ $(document).ready(function(){
 		if ($("#saverestore input[type=text]").val() != "") init("restore");
 	});
 	$("#sublist").on("click", ".apod", function () {
+		$("#sublist .apod").removeClass("nowplaying");
+		$(this).addClass("nowplaying");
 		makeplayer($(this).attr("feed"), $(this).attr("id"));
 	});
 	init();
