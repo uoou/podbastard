@@ -1,0 +1,566 @@
+<html>
+<head>
+</head>
+<title>podbastard</title>
+<style>
+body {
+	margin: 0px;
+	font-family: sans-serif;
+	font-size: 0.8rem;
+	background-color: #bdc3c7;
+}
+form {
+	margin: 0px;
+}
+input, #fails, #save, #restore {
+	border: none;
+	font-size: 1.3rem;
+}
+input[type=text] {
+	width: 100%;
+}
+input[type=submit], #fails, #save, #restore {
+	width: 100%;
+	font-weight: bold;
+	margin-top: 3px;
+	background-color: #2ecc71;
+	color: #fff;
+}
+audio {
+	width: 90%;
+	margin: auto;
+}
+#fails, #save, #restore {
+	background-color: #c0392b;
+	font-size: 1rem;
+	line-height: 1.7rem;
+	margin-bottom: 0.3rem;
+	text-align: center;
+}
+#save, #restore {
+	width: 49%;
+	float: left;
+	background-color: #e67e22;
+}
+#save:hover, #restore:hover {
+	background-color: #ffb676;
+	cursor: pointer;
+}
+#restore {
+margin-left: 2%;
+}
+#fails:hover {
+	background-color: #ff5442;
+	cursor: pointer;
+}
+input[type=submit]:hover {
+	background-color: #11f371;
+	cursor: pointer;
+}
+#adder h3 {
+	font-size: 1rem;
+	margin-bottom: 0px;
+	clear: both;
+}
+#logo {
+	float: left;
+	width: 45px;
+	height: 45px;
+	margin: 0px 7px 10px 0px;
+	-moz-box-shadow: 0px 0px 20px #777;
+	-webkit-box-shadow: 0px 0px 20px #777;
+	box-shadow: 0px 0px 20px #777;
+}
+.weeny {
+	font-size: 0.7rem;
+	margin-top: 0px;
+}
+#messcon, #playcon {
+	position: absolute;
+	top: 0px;
+	width: 20%;
+	height: 100%;
+	position: fixed;
+}
+#messcon {
+	right: 0px;
+}
+#playcon {
+	left: 0px;
+	position: fixed;
+}
+#messages, #errors, #player, #adder {
+	height: 50%;
+	color: #fff;
+	font-size: 0.7rem;
+	display: none;
+	overflow: auto;
+}
+#adder {
+	display: block;
+}
+#messages p, #errors p, #messages h2, #errors h2{
+	padding: 0px 10px;
+}
+#player, #adder {
+	padding: 10px;
+}
+#player h2, #adder h2 {
+	margin: 0px;
+}
+#messages {
+	background-color: #1abc9c;
+}
+#errors {
+	top: 50%;
+	background-color: #f1c40f;
+}
+#player {
+	background-color: #95a5a6;
+	text-align: center;
+}
+#player h3 {
+	margin-top: 0px;
+}
+#player img {
+	width: 150px;
+	height: 150px;
+	background-color: #34495e;
+	margin: 20px;
+	padding: 10px;
+}
+#player .cont {
+	text-align: left;
+	width: 100%;
+}
+#adder {
+	background-color: #7f8c8d;
+}
+#sublist {
+	width: 59.5%;
+	margin: auto;
+}
+.asub {
+	position: relative;
+	height: 115px;
+	background-color: #fff;
+	margin-bottom: 3px;
+	clear: left;
+
+}
+.asub:hover {
+	background-color: #16a085;
+	color: #fff;
+	cursor: pointer;
+}
+.simg {
+	margin: 20px;
+	float: left;
+	width: 75px;
+	height: 75px;
+	background-color: #95a5a6;
+}
+.stitle {
+	padding-top: 20px;
+	font-size: 1.2rem;
+	font-weight: bold;
+}
+.snum, .sdel {
+	padding: 5px;
+	font-size: 0.8rem;
+	color: #fff;
+	font-weight: 900;
+	position: absolute;
+}
+.snum {
+	background-color: #bdc3c7;
+	right: 20px;
+	bottom: 20px;
+}
+.sdel {
+	font-size: 0.6rem;
+	text-align: center;
+	background-color: #c0392b;
+	right: 20px;
+	top: 20px;
+	width: 0.6rem;
+}
+.sdel:hover {
+	background-color: #ff5442;
+}
+.sdesc {
+	margin-top: 5px;
+	font-size: 0.7rem;
+	width: 80%;
+}
+.podlist {
+	max-height: 600px;
+	overflow: auto;
+	width: 100%;
+}
+.apod {
+	background-color: #ecf0f1;
+	padding: 10px;
+	margin-bottom: 2px;
+}
+.apod:hover {
+	background-color: #d35400;
+	color: #fff;
+	cursor: pointer;
+}
+.ptitle {
+	font-weight: bold;
+	margin-bottom: 5px;
+	font-size: 1rem;
+}
+.pdesc p {
+	margin: 0px;
+}
+</style>
+<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+<script>
+////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////
+/// message stuff //////////////////////////////////////////////
+var timera, timerb, curopen = null, working = false, curplaying = null, totpods, t = 5000;
+dodgypods = new Array();
+function message (target, info) {
+	if (target=="#messages") {
+		clearTimeout(timera);
+		timera = setTimeout("clearmessages('#messages')", t);
+	} else {
+		clearTimeout(timerb);
+		timerb = setTimeout("clearmessages('#errors')", t);
+	}
+	$(target + " div:first").prepend(info);
+	$(target).fadeIn();
+}
+function replacemessages (target, info) {
+	if (target=="#messages") {
+		clearTimeout(timera);
+		timera = setTimeout("clearmessages('#messages')", t);
+	} else {
+		clearTimeout(timerb);
+		timerb = setTimeout("clearmessages('#errors')", t);
+	}
+	//$(target + " div").fadeOut(function() {$(target + " div").html(info, function() {$(target + " div").fadeIn();});});
+	$(target + " div:first").fadeOut(function () {$(target + " div:first").html(info).fadeIn()});
+}
+function clearmessages(target) {
+	$(target).fadeOut(function(){$(target + " div:first").html("");});
+}
+////////////////////////////////////////////////////////////////
+//==============================================================
+/// getty dataey stuff /////////////////////////////////////////
+var subbedpods = new Array();
+function getafeed (url, callback, justone) {
+	if (typeof justone === "undefined") {justone = false;}
+	totpods = subbedpods.length;
+	message("#messages", "<p>getting:<br />"+url+"</p>");
+	$.ajax({
+		url: "http://query.yahooapis.com/v1/public/yql?q=SELECT * FROM xml WHERE url=\""+url+"\"&format=json",
+		dataType: "json",
+	})
+	.done(function(data) {
+		if (data.query.results != null) {
+			if (data.query.results.rss == null || data.query.results.rss == undefined) {
+				message("#errors", "<p>not an rss feed:<br />"+url+"</p>");
+				if ($.inArray(url, dodgypods) < 0 && $.inArray(url, subbedpods) > -1) dodgypods.push(url);
+				return;
+			}
+			// handle bullshit layouts
+			if (typeof data.query.results.rss.channel.description !== "string") {
+				if (typeof data.query.results.rss.channel.description === "object") {
+					if (typeof data.query.results.rss.channel.description[0] === "string") {
+						data.query.results.rss.channel.description = data.query.results.rss.channel.description[0];
+					} else if (typeof data.query.results.rss.channel.description[1] === "string") {
+						data.query.results.rss.channel.description = data.query.results.rss.channel.description[1];
+					} else {
+						data.query.results.rss.channel.description = "No description.";
+					}
+				} else {
+					data.query.results.rss.channel.description = "No description.";
+				}
+			}
+			data.query.results.rss.channel.index = url;
+			// truncate the description
+			if (data.query.results.rss.channel.description.length > 330) data.query.results.rss.channel.description = data.query.results.rss.channel.description.substring(0,330)+"...";
+			callback(data.query.results.rss.channel);
+		} else {
+			if (!justone) totpods--;
+			message("#errors", "<p>failed to get:<br />"+url+"</p>");
+			if ($.inArray(url, dodgypods) < 0 && $.inArray(url, subbedpods) > -1) dodgypods.push(url);
+		}
+	})
+	// 400 errors and all that malarky
+	.fail(function() { 
+		message("#errors", "<p>failed to get:<br />"+url+"</p>");
+		if ($.inArray(url, dodgypods) < 0 && $.inArray(url, subbedpods) > -1) dodgypods.push(url);
+	});
+}
+function populateallpods (callback) {
+	n = 0;
+	allpods = new Array();
+	for (var i=0;i<subbedpods.length;i++) {
+		getafeed(subbedpods[i], function(afeed) {
+			allpods[n]=afeed;
+			n++;
+			if (n==totpods) callback();
+		});
+	}
+}
+function populateonepod (url, callback) {
+	 getafeed(url, function (afeed) {
+		subbedpods.push(url);
+		allpods.push(afeed);
+		callback();
+	;}, true)
+}
+///// this gets all the podcasts in the 'subbedpods' array and hands them to the callback
+function getpods(callback) {
+	populateallpods(function(){replacemessages("#messages", "<p>done. got "+n+" feeds.</p>");callback();});
+}
+function getonepod (url, callback) {
+	populateonepod(url, function(){replacemessages("#messages", "<p>done. got 1 feed.</p>");callback();});
+}
+function addapod (url) {
+	if ($.inArray(url, subbedpods) > -1) {
+		message("#errors", "<p>already subscribed to this feed</p>");
+	} else {
+		getonepod(url, function () {subdisplay(allpods.length-1, true, true);});
+	}
+}
+function removepod (id) {
+	subbedpods.splice($.inArray(allpods[id].index, subbedpods), 1);
+	allpods.splice(id, 1);
+	if ($("#sublist").empty()) subdisplay(0, false, false);
+}
+function showfails () {
+	if (dodgypods.length > 0) {
+		$("#adder #fails").html("remove " + dodgypods.length + " failed feeds?");
+		$("#adder #fails").hide().fadeIn();
+	} else {
+		$("#adder #fails").fadeOut().html("");
+	}
+}
+function removedodgy() {
+	for (var i=0;i<dodgypods.length;i++) {
+		var j = $.inArray(dodgypods[i], subbedpods);
+		if (j > -1) subbedpods.splice(j,1);
+	}
+	dodgypods = [];
+	message("#messages", "<p>" + i + " failed feeds removed</p>");
+	$("#adder #fails").fadeOut();
+	syncpods();
+}
+function syncpods () {
+	localStorage.setItem("pods", bloop(subbedpods));
+	//console.log(allpods);
+	//console.log(subbedpods);
+	//console.log(dodgypods);
+}
+////////////////////////////////////////////////////////////////
+//==============================================================
+/// bloop //////////////////////////////////////////////////////
+function bloop (blah) {
+	return escape(JSON.stringify(blah));
+}
+function unbloop (blah) {
+	return JSON.parse(unescape(blah));
+}
+////////////////////////////////////////////////////////////////
+//==============================================================
+/// layouty shenanigans/////////////////////////////////////////
+function subdisplay(current, justone, doanim) {
+	if (typeof justone === "undefined") {justone = false;}
+	if (typeof doanim === "undefined") {doanim = true;}
+	
+	if (allpods.length < 1) {
+		syncpods();
+		return;
+	}
+	
+	if (doanim) {
+		var count = current+1; 
+	} else {
+		var count = allpods.length
+	}
+	
+	for (var i=current;i<count;i++) {
+		if (allpods[i].image != undefined && allpods[i].image.length > 0 && allpods[i].image[0].url != undefined) {
+			pic = "<img class=\"simg\"src=\"" + allpods[i].image[0].url + "\" />";
+		} else if (allpods[i].image != undefined && allpods[i].image.url != undefined) {
+			pic = "<img class=\"simg\"src=\"" + allpods[i].image.url + "\" />";
+		} else if (allpods[i].image != undefined && allpods[i].image.length > 0 && allpods[i].image[1].href != undefined) {
+			pic = "<img class=\"simg\"src=\"" + allpods[i].image[1].href + "\" />";
+		} else if (allpods[i].image != undefined && allpods[i].image.href != undefined) {
+			pic = "<img class=\"simg\"src=\"" + allpods[i].image.href + "\" />";
+		} else if (allpods[i].image != undefined && allpods[i].image.length > 0 && allpods[i].image[1].url != undefined) {
+			pic = "<img class=\"simg\"src=\"" + allpods[i].image[1].url + "\" />";
+		} else if (allpods[i].image != undefined && allpods[i].image.length > 0 && allpods[i].image[0].href != undefined) {
+			pic = "<img class=\"simg\"src=\"" + allpods[i].image[0].href + "\" />";
+		} else {
+			pic = "<div class=\"simg\"></div>"
+		}
+		phtml = "<div class=\"asub\" id=\"" + i + "\">";
+		phtml += pic + "<div class=\"stitle\">" + allpods[i].title + "</div>";
+		phtml += "<div class=\"snum\">" + allpods[i].item.length + "</div>";
+		phtml += "<div class=\"sdel\" id=\"" + i + "\" title=\"remove this feed\">X</div>";
+		phtml += "<div class=\"sdesc\" id=\"" + i + "\">" + allpods[i].description + "</div>";
+		phtml += "</div>";
+		phtml += "<div class=\"podlist\" id=\"" + i + "\"></div>";
+		$("#sublist").html(phtml + $("#sublist").html());
+	}
+
+	
+	if (doanim) {
+		$("#sublist div:first").hide().fadeIn("fast", function() {
+			if (current<allpods.length-1 && !justone) {
+				subdisplay(current+1, false, true);
+			} else {
+				showfails();
+				syncpods();
+				return;
+			}
+		});
+	} else {
+		showfails();
+		syncpods();
+		return;
+	}
+}
+function makeplayer(feed, pod) {
+	console.log(allpods[feed].item[pod]);
+	var plhtml = "";
+	plhtml += "<div class=\"cont\">";
+	plhtml += "<h2>" + allpods[feed].title + "</h2>";
+	plhtml += "<h3>" + allpods[feed].item[pod].title + "</h3>";
+	plhtml += "</div>";	
+	plhtml += "<img />";
+	plhtml += "<audio controls=\"controls\" autoplay=\"true\" preload=\"auto\">";
+	plhtml += "<source src=\"" + allpods[feed].item[pod].enclosure.url + "\">";
+	plhtml += "<audio>";
+	$("#playcon #player").html(plhtml);
+	$("#playcon #player img").attr("src", $("#sublist .asub#" + feed + " img").attr("src"));
+	$("#playcon #player").hide().fadeIn();
+}
+////////////////////////////////////////////////////////////////
+//==============================================================
+/// interaction ////////////////////////////////////////////////
+function closeopen (id, callback) {
+	working = true;
+	if (curopen != null) {
+		$("#" + curopen + ".podlist").slideUp("fast", function() {
+			$("#" + curopen + ".podlist").html("").hide();
+			if (curopen != id) {
+				callback(id);
+			} else {
+				curopen = null;
+				working = false;
+			}
+		});
+	} else {
+		callback(id);
+	}
+}
+function openpod (id) {
+	var pd = "";
+	for (var i=0;i<allpods[id].item.length;i++) {
+		pd += "<div class=\"apod\" id=\"" + i + "\" feed=\"" + id + "\">";
+		pd += "<div class=\"ptitle\">" + allpods[id].item[i].title + "</div>";
+		var desc;
+		if (typeof allpods[id].item[i].description === "string") {
+			desc = allpods[id].item[i].description;
+		} else if (typeof allpods[id].item[i].description === "object" && typeof allpods[id].item[i].description.content === "string") {
+			desc = allpods[id].item[i].description.content;
+		} else {
+			desc = "no description";
+		}
+		pd += "<div class=\"pdesc\">" + desc + "</div>";
+		pd += "</div>";		
+	}
+	$("#" + id + ".podlist").html(pd).hide().slideDown("fast", function() {
+		curopen = id;
+		working = false;
+	});
+}
+function setuppage () {
+	getpods(function(pods){subdisplay(0, false, true);});
+}
+////////////////////////////////////////////////////////////////
+//==============================================================
+/// init ///////////////////////////////////////////////////////
+function init (type) {
+	$("#sublist").html("");
+	if (type == "restore") {
+		subbedpods=[];
+		subbedpods = unbloop($("#saverestore input[type=text]").val());
+		$("#saverestore input[type=text]").val("");
+	} else if (localStorage.getItem("hello") == "hello") {
+		subbedpods = unbloop(localStorage.getItem("pods"));
+	} else {
+		localStorage.setItem("hello", "hello");
+		//supply some default feeds
+		subbedpods = ["http://feeds2.feedburner.com/TheLinuxActionShowOGG", "http://www.tuxradar.com/files/podcast/podcast_ogg.rss", "http://12byzantinerulers.com/rss.xml"];
+	}
+	setuppage();
+}
+$(document).ready(function(){
+	$("#sublist").on("click", ".sdel", function (e) {
+		e.stopPropagation();
+		console.log("click: "+$(this).attr("id"));
+		removepod($(this).attr("id"));
+	});
+ 	$("#sublist").on("click", ".asub", function () {
+ 		if (!working) closeopen($(this).attr("id"), function (id) {openpod(id);});
+ 	});
+ 	$("#adder").on("click", "#fails", function () {
+ 		removedodgy();
+ 	});
+ 	$("#addfeed").submit(function(e) {
+		e.preventDefault();
+		if ($("#addfeed input[type=text]").val() != "") {addapod($("#addfeed input[type=text]").val());$("#addfeed input[type=text]").val("");}
+	});
+	$("#adder").on("click", "#save", function () {
+		$("#saverestore input[type=text]").val(bloop(subbedpods));
+	});
+	$("#adder").on("click", "#restore", function () {
+		if ($("#saverestore input[type=text]").val() != "") init("restore");
+	});
+	$("#sublist").on("click", ".apod", function () {
+		makeplayer($(this).attr("feed"), $(this).attr("id"));
+	});
+	init();
+});
+////////////////////////////////////////////////////////////////
+//==============================================================
+/// the end of the javascripts /////////////////////////////////
+</script>
+</head>
+<body>
+
+<div id="messcon">
+<div id="messages"><h2>good news</h2><div></div></div>
+<div id="errors"><h2>bad news</h2><div></div></div>
+</div>
+
+<div id="sublist"></div>
+
+<div id="playcon">
+<div id="player"><h2>ppp</h2></div>
+<div id="adder">
+<img id="logo" src="data:image/jpeg;base64,/9j/4QAYRXhpZgAASUkqAAgAAAAAAAAAAAAAAP/sABFEdWNreQABAAQAAAAUAAD/4QMZaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wLwA8P3hwYWNrZXQgYmVnaW49Iu+7vyIgaWQ9Ilc1TTBNcENlaGlIenJlU3pOVGN6a2M5ZCI/PiA8eDp4bXBtZXRhIHhtbG5zOng9ImFkb2JlOm5zOm1ldGEvIiB4OnhtcHRrPSJBZG9iZSBYTVAgQ29yZSA1LjMtYzAxMSA2Ni4xNDU2NjEsIDIwMTIvMDIvMDYtMTQ6NTY6MjcgICAgICAgICI+IDxyZGY6UkRGIHhtbG5zOnJkZj0iaHR0cDovL3d3dy53My5vcmcvMTk5OS8wMi8yMi1yZGYtc3ludGF4LW5zIyI+IDxyZGY6RGVzY3JpcHRpb24gcmRmOmFib3V0PSIiIHhtbG5zOnhtcE1NPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvbW0vIiB4bWxuczpzdFJlZj0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL3NUeXBlL1Jlc291cmNlUmVmIyIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bXBNTTpEb2N1bWVudElEPSJ4bXAuZGlkOjIzMTg2QjA0MDY2MjExRTM5RENDRkNDRjZENTBGMDgyIiB4bXBNTTpJbnN0YW5jZUlEPSJ4bXAuaWlkOjIzMTg2QjAzMDY2MjExRTM5RENDRkNDRjZENTBGMDgyIiB4bXA6Q3JlYXRvclRvb2w9IkFkb2JlIFBob3Rvc2hvcCBDUzYgV2luZG93cyI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSI4REY3MUIzQTczQjkyMDBGRDU3QUExMTQ1MDA5MDExQiIgc3RSZWY6ZG9jdW1lbnRJRD0iOERGNzFCM0E3M0I5MjAwRkQ1N0FBMTE0NTAwOTAxMUIiLz4gPC9yZGY6RGVzY3JpcHRpb24+IDwvcmRmOlJERj4gPC94OnhtcG1ldGE+IDw/eHBhY2tldCBlbmQ9InIiPz7/7gAOQWRvYmUAZMAAAAAB/9sAhAASDg4OEA4VEBAVHhMREx4jGhUVGiMiGBgaGBgiJx4iISEiHicnLjAzMC4nPj5BQT4+QUFBQUFBQUFBQUFBQUFBARQTExYZFhsXFxsaFhoWGiEaHR0aITEhISQhITE+LScnJyctPjg7MzMzOzhBQT4+QUFBQUFBQUFBQUFBQUFBQUH/wAARCAAtAC0DASIAAhEBAxEB/8QAfwAAAwADAQAAAAAAAAAAAAAAAwQGAQIFBwEBAQEBAAAAAAAAAAAAAAAAAgEDABAAAQMCBQIEAgcJAAAAAAAAARECAxIEACExEwVBIlFhMhSBFXGhQlJiIwaRscHRgpLCQyQRAQEAAQMFAAAAAAAAAAAAAAABESFBAjFRYYFC/9oADAMBAAIRAxEAPwDv87yUVtbmISNbK5O3V3iMvP8AdiLlubq7mMskxLnIGro0L24Pyt06e5f3VxMLiAdAXHPzLkGp6IMsI1ONuJgDTUWxoBmWjX+GEI7Z4oZgKg8g96Ep/bpljeCXZndszOiaHERuahk8cl6Y6HF/py4fLFNdmMWhaHUsP5j6swPLHTv/ANOWd2dy3JtZUQkCprgBkCDiZKcaZ4v9QwXB2bh1EwKMJ/2j4ZLhz3b/AHO9S7ZHYMvsnOtPhjzSN8jFiPqDi17ToHNxUfOp/lWznuJSJF76dKU1+PVv0Yopy7eDO8EUhzjn1pJyqTwweMue0wZUhzST92NvVMCvLcwzGNwci+ohKXhyEdV6Ye4JodyxDXljhGQ1uXqyqHw1xL0dJrFPb8lxzGst/cNdIUDGEFp8PtAYxe3nKslfa2MLdxqI+Re8EgOEWRHbqScb+xtgxrtlp21DXBS8ElShcqKczg8s8JkgYyZm48E0EjuDdaSeuC2wgOTj2uUug4jcrr8R0JxoLmSgvqdUXgVJlSARr4Z4e58FvNynUuawtGnRFPjhEB6F4B26w0uTtqQkD9i4WzP69j8jIJ76Uhwd+Y95I9SjQlMs8JR3E0V2y5iAMjHVZZB3iPjhiXerj3AEQJQctP56/VgI9tsFF3CRUvpA/B1Ll10yxRXHH8g3lIDFbybEp7pFWqnq1vn0PlpjBsHNpt5HtETASyGONkEVPXudU93nniMtd2tm1X7j8C1ImSpmuHuQ+ebP/SXliBS4JIidM1TBx5aTlexS8nbPyDnwAuYwiOEHuJYzLXy6YFux1Fm2acnpnudQlf1/Thng096aCNzak2iQ1KqCiA5a64GPaofRTQPvV+5Q/wCX9NOLsGuX/9k=" />
+<h2>podbastard</h2>
+<p class="weeny">version 0.0.0.0.0.1-2 rc1 alpha</p>
+<h3>add a feed</h3>
+<form id="addfeed"><input type="text" /><br /><input type="submit" value="+" /></form>
+<div id="fails" title="click to remove"></div>
+<h3>save and restore</h3>
+<form id="saverestore"><input type="text" /></form>
+<div id="save" title="copy the string and keep it somehwhere safe">save</div><div id="restore" title="paste the string into the box to restore your feeds">restore</div><br />
+<div>[note: your feeds are automatically saved in this browser. this is for taking your feeds to another browser]</div>
+</div>
+</div>
+
+</body>
+</html>
