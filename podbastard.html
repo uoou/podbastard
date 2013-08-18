@@ -292,7 +292,7 @@ function replacemessages (target, info) {
 	$(target + " div:first").fadeOut(function () {$(target + " div:first").html(info).fadeIn()});
 }
 function clearmessages(target) {
-	$(target).fadeOut(function(){$(target + " div:first").html("");});
+	$(target).fadeOut(function(){$(target + " div:first").empty();});
 }
 ////////////////////////////////////////////////////////////////
 //==============================================================
@@ -391,7 +391,7 @@ function showfails () {
 		$("#adder #fails").html("remove " + dodgypods.length + " failed feeds?");
 		$("#adder #fails").hide().fadeIn();
 	} else {
-		$("#adder #fails").fadeOut().html("");
+		$("#adder #fails").fadeOut().empty();
 	}
 }
 function removedodgy() {
@@ -516,7 +516,7 @@ function closeopen (id, callback) {
 	working = true;
 	if (curopen != null) {
 		$("#" + curopen + ".podlist").slideUp("fast", function() {
-			$("#" + curopen + ".podlist").html("").hide();
+			$("#" + curopen + ".podlist").empty().hide();
 			if (curopen != id) {
 				callback(id);
 			} else {
@@ -561,7 +561,7 @@ function setuppage () {
 //==============================================================
 /// init ///////////////////////////////////////////////////////
 function init (type) {
-	$("#sublist").html("");
+	$("#sublist").empty();
 	if (type == "restore") {
 		subbedpods=[];
 		subbedpods = unbloop($("#saverestore input[type=text]").val());
